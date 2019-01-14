@@ -1,6 +1,19 @@
 
 package main
 
+import "fmt"
+
+type contactInfo struct {
+	email string
+	zipCode int
+}
+
+type person struct {
+	firstName string
+	lastName string
+	contactInfo
+}
+
 func main()  {
 
 	//var card string = "Ace of Spades"
@@ -22,11 +35,51 @@ func main()  {
 	//cards := newDeckFromFile("my_cards1")
 	//fmt.Println(cards.toString())
 
-	cards := newDeck()
-	cards.shuffle()
-	cards.print()
+	//cards := newDeck()
+	//cards.shuffle()
+	//cards.print()
+
+	//checkTheNumber();
+
+	//alex := person {"Alex", "Anderson"}
+	//alex := person {firstName: "Alex", lastName: "Anderson"}
+	//fmt.Println(alex)
+
+	jim := person {
+		firstName: "jim",
+		lastName: "Party",
+		contactInfo: contactInfo{
+			email: "abc@gmail.com",
+			zipCode: 94000,
+		},
+	}
+
+	jimPointer := &jim
+	jimPointer.updateName("jimmy")
+	jim.print()
+
+	//jim.updateName("jimmy")
+	//jim.print()
+
+
+	c := []int{1,2,3}
+	b := c[0:2]
+
+	b[0] = 5
+	fmt.Printf("+%v", c)
 
 }
 
+//func (p person) updateName(newFirstName string)  {
+//	p.firstName = newFirstName
+//}
+
+func (pointerToPerson *person) updateName(newFirstName string)  {
+	(*pointerToPerson).firstName = newFirstName
+}
+
+func (p person) print (){
+	fmt.Printf("%+v", p)
+}
 
 
