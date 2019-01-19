@@ -45,29 +45,49 @@ func main()  {
 	//alex := person {firstName: "Alex", lastName: "Anderson"}
 	//fmt.Println(alex)
 
-	jim := person {
-		firstName: "jim",
-		lastName: "Party",
-		contactInfo: contactInfo{
-			email: "abc@gmail.com",
-			zipCode: 94000,
-		},
-	}
-
-	jimPointer := &jim
-	jimPointer.updateName("jimmy")
-	jim.print()
+	//jim := person {
+	//	firstName: "jim",
+	//	lastName: "Party",
+	//	contactInfo: contactInfo{
+	//		email: "abc@gmail.com",
+	//		zipCode: 94000,
+	//	},
+	//}
+	//
+	//jimPointer := &jim
+	//jimPointer.updateName("jimmy")
+	//jim.print()
 
 	//jim.updateName("jimmy")
 	//jim.print()
 
 
-	c := []int{1,2,3}
-	b := c[0:2]
+	//c := []int{1,2,3}
+	//b := c[0:2]
+	//
+	//b[0] = 5
+	//fmt.Printf("+%v", c)
 
-	b[0] = 5
-	fmt.Printf("+%v", c)
+	colors := map[string]string {
+		"red": "#ff0000",
+		"green": "#4bf745",
+		"white": "ffffff",
 
+	}
+
+
+
+	////var colors map[string]string
+	//
+	//colors := make(map[int]string)
+	//
+	//
+	//colors[10] = "#ffffff"
+	//
+	//
+	//delete(colors, 10)
+
+	printMap(colors)
 }
 
 //func (p person) updateName(newFirstName string)  {
@@ -82,4 +102,10 @@ func (p person) print (){
 	fmt.Printf("%+v", p)
 }
 
+
+func printMap(c map[string]string) {
+	for color, hex := range c {
+		fmt.Println("Hex code for", color, "is", hex)
+	}
+}
 
