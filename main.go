@@ -14,6 +14,13 @@ type person struct {
 	contactInfo
 }
 
+type bot interface {
+	getGreeting() string
+}
+
+type englishBot struct{}
+type spanishBot struct{}
+
 func main()  {
 
 	//var card string = "Ace of Spades"
@@ -68,12 +75,12 @@ func main()  {
 	//b[0] = 5
 	//fmt.Printf("+%v", c)
 
-	colors := map[string]string {
-		"red": "#ff0000",
-		"green": "#4bf745",
-		"white": "ffffff",
-
-	}
+	//colors := map[string]string {
+	//	"red": "#ff0000",
+	//	"green": "#4bf745",
+	//	"white": "ffffff",
+	//
+	//}
 
 
 
@@ -87,7 +94,13 @@ func main()  {
 	//
 	//delete(colors, 10)
 
-	printMap(colors)
+	//printMap(colors)
+
+	eb := englishBot{}
+	sb := spanishBot{}
+
+	printGreeting(eb);
+	printGreeting(sb);
 }
 
 //func (p person) updateName(newFirstName string)  {
@@ -109,3 +122,14 @@ func printMap(c map[string]string) {
 	}
 }
 
+func printGreeting(b bot)  {
+	fmt.Println(b.getGreeting())
+}
+
+func (englishBot) getGreeting() string {
+	return "Hi There!"
+}
+
+func (spanishBot) getGreeting() string{
+	return  "Hola!"
+}
