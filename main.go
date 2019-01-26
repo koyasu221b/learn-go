@@ -1,7 +1,12 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+)
 
 type contactInfo struct {
 	email string
@@ -20,6 +25,9 @@ type bot interface {
 
 type englishBot struct{}
 type spanishBot struct{}
+
+
+type logWriter struct{}
 
 func main()  {
 
@@ -96,11 +104,31 @@ func main()  {
 
 	//printMap(colors)
 
-	eb := englishBot{}
-	sb := spanishBot{}
+	//eb := englishBot{}
+	//sb := spanishBot{}
+	//
+	//printGreeting(eb);
+	//printGreeting(sb);
 
-	printGreeting(eb);
-	printGreeting(sb);
+	resp, err := http.Get("http://google.com")
+	if err != nil {
+		fmt.Println("error:", err)
+		os.Exit(1)
+	}
+
+	//bs := make([] byte, 99999)
+	//
+	//resp.Body.Read(bs)
+	//
+	//fmt.Println(string(bs))
+
+	lw := logWriter{}
+
+	//io.Copy(os.Stdout, resp.Body)
+
+	io.Copy(lw, resp.Body)
+
+
 }
 
 //func (p person) updateName(newFirstName string)  {
@@ -130,6 +158,12 @@ func (englishBot) getGreeting() string {
 	return "Hi There!"
 }
 
-func (spanishBot) getGreeting() string{
+func (spanishBot) getGreeting() string {
 	return  "Hola!"
+}
+
+func (logWriter) Write(bs []byte)  (int, error) {
+	fmt.Println(string(bs))
+	fmt.Println("Just wrote this many bytes:", len(bs))
+	return len(bs), nil
 }
