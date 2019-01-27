@@ -3,9 +3,8 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"net/http"
-	"os"
+	"time"
 )
 
 type contactInfo struct {
@@ -26,6 +25,13 @@ type bot interface {
 type englishBot struct{}
 type spanishBot struct{}
 
+
+type triangle struct{}
+type square struct{}
+
+type shape interface {
+	getArea() float64
+}
 
 type logWriter struct{}
 
@@ -110,11 +116,11 @@ func main()  {
 	//printGreeting(eb);
 	//printGreeting(sb);
 
-	resp, err := http.Get("http://google.com")
-	if err != nil {
-		fmt.Println("error:", err)
-		os.Exit(1)
-	}
+	//resp, err := http.Get("http://google.com")
+	//if err != nil {
+	//	fmt.Println("error:", err)
+	//	os.Exit(1)
+	//}
 
 	//bs := make([] byte, 99999)
 	//
@@ -122,12 +128,55 @@ func main()  {
 	//
 	//fmt.Println(string(bs))
 
-	lw := logWriter{}
+	//lw := logWriter{}
+	//
+	////io.Copy(os.Stdout, resp.Body)
+	//
+	//io.Copy(lw, resp.Body)
 
-	//io.Copy(os.Stdout, resp.Body)
 
-	io.Copy(lw, resp.Body)
+	links := []string {
+		"https://google.com",
+		"https://facebook.com",
+		"https://stackoverflow.com",
+		"https://golang.org",
+		"https://amazon.com",
+	}
 
+	c := make(chan string)
+
+	for _, link := range links {
+		go checkLink(link, c)
+	}
+
+
+	//for i := 0; i < len(links); i++ {
+	//	fmt.Println(<-c)
+	//}
+
+	//for  {
+	//	go checkLink(<-c, c)
+	//}
+
+	for l:= range c {
+		go func(link string) {
+			time.Sleep(5 * time.Second)
+			checkLink(link, c)
+		}(l)
+	}
+}
+
+func checkLink(link string, c chan string) {
+	_, err := http.Get(link)
+	if err != nil {
+		fmt.Println(link + "might be down!")
+		c <- "Might be down I think"
+		return
+	}
+
+	fmt.Println(link, "is up!")
+	//c <- "Yep its up"
+	c <- link
 
 }
 
@@ -166,4 +215,12 @@ func (logWriter) Write(bs []byte)  (int, error) {
 	fmt.Println(string(bs))
 	fmt.Println("Just wrote this many bytes:", len(bs))
 	return len(bs), nil
+}
+
+func (t triangle) getArea() float64 {
+	return  10.0
+}
+
+func (s square) getArea() float64 {
+	return 11.0
 }
